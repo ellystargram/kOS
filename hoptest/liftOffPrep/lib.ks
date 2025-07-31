@@ -1,0 +1,4 @@
+GLOBAL liftOffPrep_scalar_liftOffTargetTime TO 0.
+GLOBAL liftOffPrep_scalar_engineIgnitionTime TO 2.65.
+GLOBAL liftOffPrep_scalar_engineIgnitionTimeMargin TO 0.3.
+GLOBAL liftOffPrep_boolean_engineIgnitionEnabled TO FALSE.

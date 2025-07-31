@@ -22,6 +22,8 @@ lock stageMaxThrustSL to 673.2.
 lock stageMinThrustSL to 263.
 lock stageEngineIgnitionTime to 2.6.
 
+global debug_landingAlt to ship:altitude.
+
 function map {
     parameter fromValue.
     parameter fromMin.
@@ -263,8 +265,10 @@ function finalTouchdown {
 
 function landing {
     // landingGuide().
-    descending().
-    finalTouchdown().
+    // descending().
+    // finalTouchdown().
+
+    runpath("0:/falcon9/landing/landing2.ks").
 }
 
 function inFlight {
