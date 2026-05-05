@@ -22,6 +22,8 @@ lock stageMaxThrustSL to 673.2.
 lock stageMinThrustSL to 263.
 lock stageEngineIgnitionTime to 2.6.
 
+global debug_landingAlt to ship:altitude.
+
 function map {
     parameter fromValue.
     parameter fromMin.
@@ -95,16 +97,16 @@ function padClear {
         print "STATUS: PAD_CLEARING" at (0, 0).
         // throttle control part
         
-        local vesselMaxAccelation to stageMaxThrustSL / vesselMass.
-        local accentThrottle to 1.
-        local requiredThrust to stageMaxThrustSL.
+        set vesselMaxAccelation to stageMaxThrustSL / vesselMass.
+        set accentThrottle to 1.
+        set requiredThrust to stageMaxThrustSL.
         
         if vesselMaxAccelation > accentAccelationLimit {
             set requiredThrust to vesselWeight * accentAccelationLimit.
-            set accentThrottle to map(requiredThrust, stageMinThrustSL, stageMaxThrustSL, 0.0, 1.0).
+            set accentThrottle to map(requiredThrust, stageMinThrustSL, stageMaxThrustSL, 0.01, 1.0).
         }
         lock throttle to accentThrottle.
-        print "THROTTLE: " + (accentThrottle*100) + "%" at (0, 1).  
+        print "THROTTLE: " + (accentThrottle*100) + "%" at (0, 1). 
         print "TWR: " + (requiredThrust / vesselWeight) at (0, 2).
 
         // direction control part
@@ -124,22 +126,18 @@ function padClear {
 
 function hovering {
     clearScreen.
-    print "STATUS: HOVERING" at (0, 0).
+    lock vesselWeight to ship:mass * CURRENTBODYG.
+    lock requiredThrust to vesselWeight * 0.6.
+    lock requiredThrottle to map(requiredThrust, stageMinThrustSL, stageMaxThrustSL, 0.01, 1.0).
+    lock throttle to requiredThrottle.
+    lock steering to up.
+    
     until ship:verticalSpeed <=0 {
-        local vesselMass to ship:mass.
-        local flyingBody to ship:body.
-        local flyingBodyDistance to flyingBody:radius + ship:altitude.
-        local flyingBodyGravity to flyingBody:mu / (flyingBodyDistance ^ 2).
-        local vesselWeight to vesselMass * flyingBodyGravity.
-        lock wantTWR to 0.6.
-        local requiredThrust to vesselWeight * wantTWR.
-
-        local requiredThrottle to map(requiredThrust, stageMinThrustSL, stageMaxThrustSL, 0.0, 1.0).
-        if requiredThrottle = 0 {
-            set requiredThrottle to 0.01.
-        }
-        lock throttle to requiredThrottle.
-        lock steering to up.
+        print "STATUS: HOVERING" at (0, 0).
+        print "THROTTLE: " + (throttle*100) + "%" at (0, 1). 
+        print "TWR: " + (requiredThrust / vesselWeight) at (0, 2).
+        print "VW: " + vesselWeight + "kn" at (0, 3).
+        print "RT: " + requiredThrust + "kn" at (0, 4).
     }
 }
 
@@ -154,13 +152,25 @@ function accent {
 
 function landingGuide {
     //TODO LATER
-    wait(2).
+    //wait(2).
 }
 
 function descending {
     clearScreen.
     print "STATUS: DESCENDING" at (0, 0).
     set brakes to true.
+    local gridfins to SHIP:partstagged("S1_GRIDFIN").
+    for gridfin in gridfins {
+        .
+    }   
+    set STEERINGMANAGER:pitchtorquefactor to 5.
+    set STEERINGMANAGER:yawtorquefactor to 5.
+    set STEERINGMANAGER:rolltorquefactor to 5.
+    set STEERINGMANAGER:MAXSTOPPINGTIME to 1.
+    set steeringManager:pitchts to 5.
+    set steeringManager:yawts to 5.
+    set steeringManager:rollts to 5.
+
     lock vesselWeight to ship:mass * CURRENTBODYG.
     lock vesselEngineAccelationMax to (ship:maxThrust * 0.8 - vesselWeight) / ship:mass.
     lock finalDecelSpeed to 2.
@@ -179,8 +189,14 @@ function descending {
     }
     set gear to true.
 
-    
-    
+    set STEERINGMANAGER:pitchtorquefactor to 1.
+    set STEERINGMANAGER:yawtorquefactor to 1.
+    set STEERINGMANAGER:rolltorquefactor to 1.
+    set STEERINGMANAGER:MAXSTOPPINGTIME to 2.
+    set steeringManager:pitchts to 2.
+    set steeringManager:yawts to 2.
+    set steeringManager:rollts to 2.
+
 
     until ship:velocity:surface:mag <= finalDecelSpeed {
         print "ALT: " + radarAltitude at (0, 1).
@@ -194,7 +210,7 @@ function descending {
         set requiredUpwardThrust to ship:mass * requiredAccelation.
         set rocketWeight to ship:mass * CURRENTBODYG.
         set requiredEngineThrust to rocketWeight + requiredUpwardThrust.
-        set requiredEngineThrottle to map(requiredEngineThrust, stageMinThrustSL, stageMaxThrustSL, 0.01, 1.0).
+        local requiredEngineThrottle to map(requiredEngineThrust, stageMinThrustSL, stageMaxThrustSL, 0.01, 1.0).
 
         if requiredEngineThrottle > 1.0 {
             print "MAXIMUM PERFORMACE!!!!!" at (0, 5).
@@ -249,8 +265,10 @@ function finalTouchdown {
 
 function landing {
     // landingGuide().
-    descending().
-    finalTouchdown().
+    // descending().
+    // finalTouchdown().
+
+    runpath("0:/falcon9/landing/landing2.ks").
 }
 
 function inFlight {
