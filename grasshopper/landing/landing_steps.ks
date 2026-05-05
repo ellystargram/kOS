@@ -57,7 +57,8 @@ FUNCTION landingStep_void_guideDescent {
     LOCAL direction_targetDirection TO HEADING(scalar_totalTargetHeading, 90 - scalar_totalTargetPitch).
     SET standard_direction_targetDirection TO direction_targetDirection.
 
-    LOG TIME:SECONDS + ", " + scalar_verticalSpeed + ", " + scalar_currentRadarAltitude + ", " + scalar_targetVerticalSpeed + ", " + scalar_targetThrottle + ", " + scalar_currentLatitude + ", " + scalar_currentLongitude + ", " + scalar_xError + ", " + scalar_yError + ", " + scalar_targetXSpeed + ", " + scalar_currentXSpeed + ", " + scalar_targetXPitch + ", " + scalar_targetYSpeed + ", " + scalar_currentYSpeed + ", " + scalar_targetYPitch + ", " + scalar_totalTargetPitch + ", " + scalar_totalTargetHeading TO "0:/grasshopper/landing/landing_log.csv".
+    LOCAL scalar_engineResponse TO standard_scalar_stage1CurrentThrust.
+    LOG TIME:SECONDS + ", " + scalar_verticalSpeed + ", " + scalar_currentRadarAltitude + ", " + scalar_targetVerticalSpeed + ", " + scalar_targetThrottle + ", " + scalar_engineResponse + ", " + scalar_currentLatitude + ", " + scalar_currentLongitude + ", " + scalar_xError + ", " + scalar_yError + ", " + scalar_targetXSpeed + ", " + scalar_currentXSpeed + ", " + scalar_targetXPitch + ", " + scalar_targetYSpeed + ", " + scalar_currentYSpeed + ", " + scalar_targetYPitch + ", " + scalar_totalTargetPitch + ", " + scalar_totalTargetHeading TO "0:/grasshopper/landing/landing_log.csv".
 
     IF (scalar_verticalSpeed >= -1 AND scalar_currentRadarAltitude <= 36) {
         PRINT "Final approach" AT (0, 19).

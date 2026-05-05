@@ -1,7 +1,7 @@
 RUNONCEPATH("0:/grasshopper/grasshopper_lib.ks").
 
-GLOBAL landing_pidloop_verticalSpeed TO PIDLOOP(1.5, 0.5, 0.1, -15, 0).
-GLOBAL landing_pidloop_throttle TO PIDLOOP(0.4, 0.05, 0.05, 0.01, 1).
+GLOBAL landing_pidloop_verticalSpeed TO PIDLOOP(0.8, 0.1, 0.5, -20, 0).
+GLOBAL landing_pidloop_throttle TO PIDLOOP(0.25, 0.05, 0.3, 0.01, 1).
 
 GLOBAL landing_pidloop_xSpeed TO PIDLOOP(0.08, 0.0, 0.06, -15, 15). //longitude
 GLOBAL landing_pidloop_xPitch TO PIDLOOP(1.2, 0.01, 0.6, -15, 15).
