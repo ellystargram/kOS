@@ -1,13 +1,9 @@
-RUN std_lib.ks.
+RUNONCEPATH("0:/falcon9/falcon9_lib.ks").
+RUNONCEPATH("0:/falcon9/falcon9_steps.ks").
 
-on AG9 { //LD Confirm KEY
-    SET boolean_clockRollingEnabled TO TRUE.
-}
+CLEARSCREEN.
 
-on AG10 { //LD Deny KEY
-    REBOOT.
-}
 
-UNTIL boolean_clockRollingEnabled {}
 
-RUN "launch/landing_test_launch1.ks".
+
+standard_void_runStep("VehicleSafing", step_void_vehicleSafing@).
