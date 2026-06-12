@@ -6,8 +6,8 @@ GLOBAL ascentLibs_scalar_targetInclination TO 45.0. //degrees
 
 GLOBAL ascentLibs_scalar_towerClearTargetAltitude TO 150. //m
 GLOBAL ascentLibs_scalar_towerClearTargetVerticalSpeed TO 50. //m/s
-GLOBAL ascentLibs_scalar_pitchKickDegreePerSecond TO 0.4.
-GLOBAL ascentLibs_scalar_pitchKickTargetmAXAngle TO 45.0.
+GLOBAL ascentLibs_scalar_pitchKickDegreePerSecond TO 0.5.
+GLOBAL ascentLibs_scalar_pitchKickTargetmAXAngle TO 40.0.
 SET ascentLibs_timestamp_pitchKickStartTime TO standard_timestamp_terminalCountDown.
 GLOBAL ascentLibs_scalar_pitchKickEndAtmosphericKPA TO 1.0. //kPa
 

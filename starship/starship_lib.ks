@@ -2,13 +2,11 @@ GLOBAL standard_scalar_step TO FALSE.
 GLOBAL standard_timeStamp_terminalCount0Time TO TIME.
 GLOBAL standard_scalar_merlin1DEngineSpoolTime TO 2.6.
 GLOBAL standard_scalar_SpoolTimeMargin TO 0.5.
-GLOBAL standard_string_stage1EngineMode TO "OFF". // "OFF", "9", "3", "1"
+GLOBAL standard_string_stageEngineMode TO "OFF". // "OFF", "1", "2", "3", "6"
 GLOBAL standard_scalar_targetThrottle TO 0.0.
 GLOBAL standard_direction_targetDirection TO UP.
 
 GLOBAL LOCK standard_scalar_gAcceleration TO CONSTANT:G * BODY:MASS / (BODY:RADIUS + SHIP:ALTITUDE)^2.
-
-
 
 FUNCTION standard_void_runStep {
     PARAMETER param_string_stepName.
@@ -62,61 +60,53 @@ FUNCTION standard_scalar_getEngineCurrentThrustByTag {
     RETURN standard_engine_getEngineByTag(param_string_tag):THRUST.
 }
 
-FUNCTION standard_void_setStage1EngineMode {
-    PARAMETER param_string_mode. // "OFF", "9", "3", "1"
+FUNCTION standard_void_setStage2EngineMode {
+    PARAMETER param_string_mode. // "OFF", "1", "2", "3", "6"
 
-    LOCAL part_stage1Engine1 TO SHIP:PARTSTAGGED("S1E1")[0].
-    LOCAL part_stage1Engine2 TO SHIP:PARTSTAGGED("S1E2")[0].
-    LOCAL part_stage1Engine3 TO SHIP:PARTSTAGGED("S1E3")[0].
-    LOCAL part_stage1Engine4 TO SHIP:PARTSTAGGED("S1E4")[0].
-    LOCAL part_stage1Engine5 TO SHIP:PARTSTAGGED("S1E5")[0].
-    LOCAL part_stage1Engine6 TO SHIP:PARTSTAGGED("S1E6")[0].
-    LOCAL part_stage1Engine7 TO SHIP:PARTSTAGGED("S1E7")[0].
-    LOCAL part_stage1Engine8 TO SHIP:PARTSTAGGED("S1E8")[0].
-    LOCAL part_stage1Engine9 TO SHIP:PARTSTAGGED("S1E9")[0].
+    LOCAL part_stage2Engine1 TO SHIP:PARTSTAGGED("S2E1")[0].
+    LOCAL part_stage2Engine2 TO SHIP:PARTSTAGGED("S2E2")[0].
+    LOCAL part_stage2Engine3 TO SHIP:PARTSTAGGED("S2E3")[0].
+    LOCAL part_stage2Engine4 TO SHIP:PARTSTAGGED("S2E4")[0]. //RVAC1
+    LOCAL part_stage2Engine5 TO SHIP:PARTSTAGGED("S2E5")[0]. //RVAC2
+    LOCAL part_stage2Engine6 TO SHIP:PARTSTAGGED("S2E6")[0]. //RVAC3
 
     SET standard_string_stage2EngineMode TO param_string_mode.
 
     IF (param_string_mode = "OFF") {
-        part_stage1Engine1:SHUTDOWN().
-        part_stage1Engine2:SHUTDOWN().
-        part_stage1Engine3:SHUTDOWN().
-        part_stage1Engine4:SHUTDOWN().
-        part_stage1Engine5:SHUTDOWN().
-        part_stage1Engine6:SHUTDOWN().
-        part_stage1Engine7:SHUTDOWN().
-        part_stage1Engine8:SHUTDOWN().
-        part_stage1Engine9:SHUTDOWN().
+        part_stage2Engine1:SHUTDOWN().
+        part_stage2Engine2:SHUTDOWN().
+        part_stage2Engine3:SHUTDOWN().
+        part_stage2Engine4:SHUTDOWN().
+        part_stage2Engine5:SHUTDOWN().
+        part_stage2Engine6:SHUTDOWN().
     } ELSE IF(param_string_mode = "1") {
-        part_stage1Engine1:ACTIVATE().
-        part_stage1Engine2:SHUTDOWN().
-        part_stage1Engine3:SHUTDOWN().
-        part_stage1Engine4:SHUTDOWN().
-        part_stage1Engine5:SHUTDOWN().
-        part_stage1Engine6:SHUTDOWN().
-        part_stage1Engine7:SHUTDOWN().
-        part_stage1Engine8:SHUTDOWN().
-        part_stage1Engine9:SHUTDOWN().
-    } ELSE IF(param_string_mode = "3") {
-        part_stage1Engine1:ACTIVATE().
-        part_stage1Engine2:SHUTDOWN().
-        part_stage1Engine3:SHUTDOWN().
-        part_stage1Engine4:SHUTDOWN().
-        part_stage1Engine5:ACTIVATE().
-        part_stage1Engine6:SHUTDOWN().
-        part_stage1Engine7:SHUTDOWN().
-        part_stage1Engine8:SHUTDOWN().
-        part_stage1Engine9:ACTIVATE().
-    } ELSE IF (param_string_mode = "9") {
-        part_stage1Engine1:ACTIVATE().
-        part_stage1Engine2:ACTIVATE().
-        part_stage1Engine3:ACTIVATE().
-        part_stage1Engine4:ACTIVATE().
-        part_stage1Engine5:ACTIVATE().
-        part_stage1Engine6:ACTIVATE().
-        part_stage1Engine7:ACTIVATE().
-        part_stage1Engine8:ACTIVATE().
-        part_stage1Engine9:ACTIVATE().
+        part_stage2Engine1:ACTIVATE().
+        part_stage2Engine2:SHUTDOWN().
+        part_stage2Engine3:SHUTDOWN().
+        part_stage2Engine4:SHUTDOWN().
+        part_stage2Engine5:SHUTDOWN().
+        part_stage2Engine6:SHUTDOWN().
+    } ELSE IF(param_string_mode = "2") {
+        part_stage2Engine1:ACTIVATE().
+        part_stage2Engine2:ACTIVATE().
+        part_stage2Engine3:SHUTDOWN().
+        part_stage2Engine4:SHUTDOWN().
+        part_stage2Engine5:SHUTDOWN().
+        part_stage2Engine6:SHUTDOWN().
+    } ELSE IF (param_string_mode = "3") {
+        part_stage2Engine1:ACTIVATE().
+        part_stage2Engine2:ACTIVATE().
+        part_stage2Engine3:ACTIVATE().
+        part_stage2Engine4:SHUTDOWN().
+        part_stage2Engine5:SHUTDOWN().
+        part_stage2Engine6:SHUTDOWN().
+    } ELSE IF (param_string_mode = "6") {
+        part_stage2Engine1:ACTIVATE().
+        part_stage2Engine2:ACTIVATE().
+        part_stage2Engine3:ACTIVATE().
+        part_stage2Engine4:ACTIVATE().
+        part_stage2Engine5:ACTIVATE().
+        part_stage2Engine6:ACTIVATE().
     }
 }
 
